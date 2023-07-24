@@ -127,9 +127,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Casino.cpp" />
     <ClCompile Include="MainForm.cpp" />
-    <ClCompile Include="Minesweeper.cpp" />
+    <ClCompile Include="MineSweeperv2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Casino.h">
@@ -138,7 +137,7 @@
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Minesweeper.h">
+    <ClInclude Include="MineSweeperv2.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="User.h" />
@@ -150,8 +149,8 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Minesweeper.resx">
-      <DependentUpon>Minesweeper.h</DependentUpon>
+    <EmbeddedResource Include="MineSweeperv2.resx">
+      <DependentUpon>MineSweeperv2.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

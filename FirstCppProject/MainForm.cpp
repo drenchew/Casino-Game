@@ -1,6 +1,6 @@
 #include "MainForm.h"
 #include "Casino.h"
-#include "Minesweeper.h"
+#include"MineSweeperv2.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -31,8 +31,10 @@ void main(array<String^>^ args)
 	{
 		if (form_casino.Mine_sweeper_ == true) 
 		{
-			FirstCppProject::Minesweeper ms_form;
-			ms_form.ShowDialog();
+			FirstCppProject::MineSweeperv2 Minesweeper_Window;
+			Minesweeper_Window.ShowDialog();
+			//FirstCppProject::Minesweeper ms_form;
+			//ms_form.ShowDialog();
 			break;
 		}
 		else if (form_casino.Slots_ != 0)

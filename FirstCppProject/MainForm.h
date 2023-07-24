@@ -39,206 +39,8 @@ namespace FirstCppProject {
 			//TODO: Add the constructor code here
 			//
 		}
-		void Calcs(std::string& input) {
 
-			if (input.empty())
-			{
-				input = "Please Enter Valid Data";
-				return;
-			}
-			std::istringstream istr(input);
-			
-			std::shared_ptr<std::vector<int>> coefficients = std::make_shared<std::vector<int>>(); // Create a dynamic vector using shared_ptr
-
-			
-			std::string token;
-			while (istr>>token)
-			{
-				if (isInt(token))
-				{
-					coefficients->push_back(stoi(token));
-				}
-				else {
-					input = "Please Enter Valid Data";
-					//throw a error message
-				}
-				
-			} // we have the coefficients now 
-				// eg : 3 5 2 1
-
-			// need to get the delitels of the last number and of the first
-
-			
-
-			std::shared_ptr<std::unordered_set<double>> real_roots = std::make_shared < std::unordered_set < double >>(); // potential roots
-
-			{
-
-				std::shared_ptr<std::vector<int>> delitels_p = std::make_shared<std::vector<int>>(); // delitels of the last coefficient
-				int X = (*coefficients)[coefficients->size() - 1];  // the last coefficient
-				find_delitels(delitels_p, X);
-
-
-				std::shared_ptr<std::vector<int>> delitels_q = std::make_shared<std::vector<int>>(); // delitels of the starshi coefficient
-				X = (*coefficients)[0];
-				find_delitels(delitels_q, X);
-
-				//std::shared_ptr<std::unordered_set<double>> real_roots = std::make_shared < std::unordered_set < double >> (); // potential roots
-				get_potential_roots(real_roots, delitels_p, delitels_q);
-
-			}
-
-
-			test_values(real_roots,input,coefficients); //2 -9 -23 42 11 -3            : roots ->  
-			
-		}
-
-		void as_fraction(double number,std::string& input) {
-			double cycles = 10, precision = 5e-4;
-			int sign = number > 0 ? 1 : -1;
-			number = number * sign; //abs(number);
-			double new_number, whole_part;
-			double decimal_part = number - (int)number;
-			int counter = 0;
-
-			std::valarray<double> vec_1{double((int)number), 1}, vec_2{ 1,0 }, temporary;
-
-			while (decimal_part > precision & counter < cycles) {
-				new_number = 1 / decimal_part;
-				whole_part = (int)new_number;
-
-				temporary = vec_1;
-				vec_1 = whole_part * vec_1 + vec_2;
-				vec_2 = temporary;
-
-				decimal_part = new_number - whole_part;
-				counter += 1;
-			}
-			if (vec_1[1] != 1)
-			{
-				input += '\n';
-				input += std::to_string(sign * vec_1[0]);
-				input += " / ";
-				input += std::to_string(vec_1[1]);
-				input += '\n';
-
-
-			}// 1 10 13 -24
-			
-
-	//			cout << "x: " << number << "\tFraction: " << sign * vec_1[0] << '/' << vec_1[1] << endl;
-		}
-
-
-
-		double plug_in(const double &e, std::shared_ptr<std::vector<int>>& coefficients)
-		{
-			//std::vector<int> temp_coef;
-			std::shared_ptr<std::vector<int>> temp_coef =std::make_shared<std::vector<int>>();;
-
-			double result = 0;
-			short degree = coefficients->size() - 1;
-			{
-				//test code
-				
-				// e - is the value
-				temp_coef->push_back((*coefficients)[0]); /* get the first coeff */ int j = 0;
-				for (size_t i = 1; i < coefficients->size(); i++)
-				{
-					result = e * (*temp_coef)[j++] + (*coefficients)[i];
-					temp_coef->push_back(result);
-				}
-
-				// check to see if it end in 0
-				if ((*temp_coef)[temp_coef->size()-1] == 0)
-				{
-					coefficients = temp_coef;
-					plug_in(e, coefficients);
-				}
-
-			}
-			/*for (auto& coeff : *coefficients)
-			{
-				if (degree <=0)
-				{
-					result += coeff;
-					break;
-				}
-				result = result + coeff * pow(e, degree--);
-			}*/
-			return result;
-		}
-
-		void  test_values(std::shared_ptr<std::unordered_set<double>>& real_roots,std::string& input, std::shared_ptr<std::vector<int>>& coefficients)
-		{
-			input.clear();
-			//f(x) = x^3 - 6x^2 + 11x - 6
-			//1 -6 11 -6
-			// roots -> 1 , 2, 3
-			const double tolerance = 0.000001;
-			
-			for (const auto& e : *real_roots)
-			{
-				double val = plug_in(e,coefficients);
-					if ((val < tolerance) && (val > tolerance * (-1)))
-					{
-						input += std::to_string(e) + " ;"; // it means that we have a root
-						as_fraction(e,input);
-						
-					}
-					val = plug_in(e*(-1), coefficients);
-					if ((val < tolerance) && (val > tolerance*(-1)))
-					{
-						input += "-" + std::to_string(e) + " ";
-						as_fraction(e, input);
-					}
-			}
-			if (input.empty())
-			{
-				input = "No Real Roots!";
-			}
-			else
-			{
-			//	as_fraction(stod(input),input);
-			}
-		}
-
-		void get_potential_roots(std::shared_ptr<std::unordered_set<double>>& real_roots,
-		std::shared_ptr<std::vector<int>>& delitels_p, std::shared_ptr<std::vector<int>>& delitels_q)
-		{
-			for (size_t i = 0; i < delitels_p->size(); i++)
-			{
-				for (size_t j = 0; j < delitels_q->size(); j++)
-				{
-					double res = static_cast<double>((*delitels_p)[i]) / (*delitels_q)[j];
-					real_roots->insert(res);
-				}
-			}
-		}
-
-		void find_delitels(std::shared_ptr<std::vector<int>>& delitels_x,int& c)
-		{
-			for ( short int i = 1; i <= abs(c); i++)
-			{
-				if (c % i == 0)
-				{
-					delitels_x->push_back(i);
-				}
-			}
-
-		}
-
-
-
-		bool isInt(const std::string& str) {
-			try {
-				int value = std::stoi(str);
-				return true; // Successfully converted to double
-			}
-			catch (const std::exception&) {
-				return false; // Failed to convert to double
-			}
-		}
+	
 
 
 		//end
@@ -365,6 +167,7 @@ private: System::Windows::Forms::Label^ label3;
 			this->user->Name = L"user";
 			this->user->Size = System::Drawing::Size(262, 13);
 			this->user->TabIndex = 5;
+			this->user->TextChanged += gcnew System::EventHandler(this, &MainForm::user_TextChanged);
 			// 
 			// panel3
 			// 
@@ -598,6 +401,8 @@ private: System::Void submit_btn_Click(System::Object^ sender, System::EventArgs
 	}
 
 
+}
+private: System::Void user_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }

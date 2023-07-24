@@ -18,11 +18,8 @@
     <ClCompile Include="MainForm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Casino.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Minesweeper.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="MineSweeperv2.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -35,7 +32,7 @@
     <ClInclude Include="Casino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Minesweeper.h">
+    <ClInclude Include="MineSweeperv2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
